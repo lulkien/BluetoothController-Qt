@@ -1,6 +1,0 @@
-<RCC>
-  <qresource prefix="/qt/qml/com/lluetooth">
-    <file alias="qmldir">/home/ark/Working/Qt/Bluetooth/build/com/lluetooth/qmldir</file>
-  </qresource>
-</RCC>
-

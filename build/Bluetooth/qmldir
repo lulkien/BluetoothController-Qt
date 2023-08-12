@@ -1,6 +1,0 @@
-module Bluetooth
-typeinfo appBluetooth.qmltypes
-prefer :/qt/qml/Bluetooth/
-Main 1.0 ui/Main.qml
-HomeScreen 1.0 ui/screens/HomeScreen.qml
-

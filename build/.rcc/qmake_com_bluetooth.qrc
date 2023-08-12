@@ -1,6 +1,0 @@
-<RCC>
-  <qresource prefix="/qt/qml/com/bluetooth">
-    <file alias="qmldir">/home/ark/Working/Qt/Bluetooth/build/com/bluetooth/qmldir</file>
-  </qresource>
-</RCC>
-

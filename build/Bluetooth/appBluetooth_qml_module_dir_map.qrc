@@ -1,6 +1,0 @@
-<RCC>
-  <qresource prefix="/">
-    <file alias="/qt/qml/Bluetooth">/home/ark/Working/Qt/Bluetooth/build/Bluetooth</file>
-
-  </qresource>
-</RCC>
