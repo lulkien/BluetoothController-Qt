@@ -1,0 +1,14 @@
+-rootPath
+/home/ark/Working/Qt/Bluetooth
+-cmake-output
+-output-file
+/home/ark/Working/Qt/Bluetooth/build/.qt_plugins/Qt6_QmlPlugins_Imports_appBluetooth.cmake
+-importPath
+/home/ark/Working/Qt/Bluetooth/build/Bluetooth
+-importPath
+/home/ark/Working/Qt/Bluetooth/build
+-importPath
+/usr/lib/qt6/qml
+-qrcFiles
+/home/ark/Working/Qt/Bluetooth/build/.rcc/qmake_Bluetooth.qrc
+/home/ark/Working/Qt/Bluetooth/build/.rcc/appBluetooth_raw_qml_0.qrc

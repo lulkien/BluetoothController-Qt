@@ -1,0 +1,147 @@
+{
+    "classes": [
+        {
+            "classInfos": [
+                {
+                    "name": "QML.Element",
+                    "value": "auto"
+                },
+                {
+                    "name": "QML.Singleton",
+                    "value": "true"
+                }
+            ],
+            "className": "BluetoothManager",
+            "object": true,
+            "properties": [
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": true,
+                    "index": 0,
+                    "name": "isScanning",
+                    "notify": "isScanningChanged",
+                    "read": "isScanning",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "bool",
+                    "user": false,
+                    "write": "setIsScanning"
+                },
+                {
+                    "constant": false,
+                    "designable": true,
+                    "final": true,
+                    "index": 1,
+                    "name": "isPairing",
+                    "notify": "isPairingChanged",
+                    "read": "isPairing",
+                    "required": false,
+                    "scriptable": true,
+                    "stored": true,
+                    "type": "bool",
+                    "user": false,
+                    "write": "setIsPairing"
+                }
+            ],
+            "qualifiedClassName": "BluetoothManager",
+            "signals": [
+                {
+                    "access": "public",
+                    "name": "isScanningChanged",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "name": "isPairingChanged",
+                    "returnType": "void"
+                }
+            ],
+            "slots": [
+                {
+                    "access": "public",
+                    "name": "showHostInfo",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "name": "startScan",
+                    "returnType": "void"
+                },
+                {
+                    "access": "public",
+                    "arguments": [
+                        {
+                            "name": "deviceIndex",
+                            "type": "int"
+                        }
+                    ],
+                    "name": "requestPairing",
+                    "returnType": "void"
+                },
+                {
+                    "access": "private",
+                    "arguments": [
+                        {
+                            "name": "device",
+                            "type": "QBluetoothDeviceInfo"
+                        }
+                    ],
+                    "name": "deviceDiscovered",
+                    "returnType": "void"
+                },
+                {
+                    "access": "private",
+                    "arguments": [
+                        {
+                            "name": "error",
+                            "type": "QBluetoothDeviceDiscoveryAgent::Error"
+                        }
+                    ],
+                    "name": "scanError",
+                    "returnType": "void"
+                },
+                {
+                    "access": "private",
+                    "name": "scanFinished",
+                    "returnType": "void"
+                },
+                {
+                    "access": "private",
+                    "arguments": [
+                        {
+                            "name": "address",
+                            "type": "QBluetoothAddress"
+                        },
+                        {
+                            "name": "pairing",
+                            "type": "QBluetoothLocalDevice::Pairing"
+                        }
+                    ],
+                    "name": "pairingFinished",
+                    "returnType": "void"
+                },
+                {
+                    "access": "private",
+                    "arguments": [
+                        {
+                            "name": "error",
+                            "type": "QBluetoothLocalDevice::Error"
+                        }
+                    ],
+                    "name": "pairingError",
+                    "returnType": "void"
+                }
+            ],
+            "superClasses": [
+                {
+                    "access": "public",
+                    "name": "QObject"
+                }
+            ]
+        }
+    ],
+    "inputFile": "bluetoothmanager.h",
+    "outputRevision": 68
+}

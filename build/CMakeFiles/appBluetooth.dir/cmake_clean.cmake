@@ -1,0 +1,43 @@
+file(REMOVE_RECURSE
+  ".rcc/qmlcache/appBluetooth_qmlcache_loader.cpp"
+  ".rcc/qmlcache/appBluetooth_ui/Main_qml.cpp"
+  ".rcc/qmlcache/appBluetooth_ui/screens/HomeScreen_qml.cpp"
+  ".rcc/qrc_appBluetooth_raw_qml_0.cpp"
+  ".rcc/qrc_qmake_Bluetooth.cpp"
+  "CMakeFiles/appBluetooth_autogen.dir/AutogenUsed.txt"
+  "CMakeFiles/appBluetooth_autogen.dir/ParseCache.txt"
+  "appBluetooth_autogen"
+  "Bluetooth/appBluetooth.qmltypes"
+  "CMakeFiles/appBluetooth.dir/appBluetooth_autogen/mocs_compilation.cpp.o"
+  "CMakeFiles/appBluetooth.dir/appBluetooth_autogen/mocs_compilation.cpp.o.d"
+  "CMakeFiles/appBluetooth.dir/appbluetooth_qmltyperegistrations.cpp.o"
+  "CMakeFiles/appBluetooth.dir/appbluetooth_qmltyperegistrations.cpp.o.d"
+  "CMakeFiles/appBluetooth.dir/build/.rcc/qmlcache/appBluetooth_qmlcache_loader.cpp.o"
+  "CMakeFiles/appBluetooth.dir/build/.rcc/qmlcache/appBluetooth_qmlcache_loader.cpp.o.d"
+  "CMakeFiles/appBluetooth.dir/build/.rcc/qmlcache/appBluetooth_ui/Main_qml.cpp.o"
+  "CMakeFiles/appBluetooth.dir/build/.rcc/qmlcache/appBluetooth_ui/Main_qml.cpp.o.d"
+  "CMakeFiles/appBluetooth.dir/build/.rcc/qmlcache/appBluetooth_ui/screens/HomeScreen_qml.cpp.o"
+  "CMakeFiles/appBluetooth.dir/build/.rcc/qmlcache/appBluetooth_ui/screens/HomeScreen_qml.cpp.o.d"
+  "CMakeFiles/appBluetooth.dir/build/.rcc/qrc_appBluetooth_raw_qml_0.cpp.o"
+  "CMakeFiles/appBluetooth.dir/build/.rcc/qrc_appBluetooth_raw_qml_0.cpp.o.d"
+  "CMakeFiles/appBluetooth.dir/build/.rcc/qrc_qmake_Bluetooth.cpp.o"
+  "CMakeFiles/appBluetooth.dir/build/.rcc/qrc_qmake_Bluetooth.cpp.o.d"
+  "CMakeFiles/appBluetooth.dir/src/bluetoothdevicesmodel.cpp.o"
+  "CMakeFiles/appBluetooth.dir/src/bluetoothdevicesmodel.cpp.o.d"
+  "CMakeFiles/appBluetooth.dir/src/bluetoothmanager.cpp.o"
+  "CMakeFiles/appBluetooth.dir/src/bluetoothmanager.cpp.o.d"
+  "CMakeFiles/appBluetooth.dir/src/chatserver.cpp.o"
+  "CMakeFiles/appBluetooth.dir/src/chatserver.cpp.o.d"
+  "CMakeFiles/appBluetooth.dir/src/main.cpp.o"
+  "CMakeFiles/appBluetooth.dir/src/main.cpp.o.d"
+  "appBluetooth"
+  "appBluetooth.pdb"
+  "appbluetooth_qmltyperegistrations.cpp"
+  "meta_types/qt6appbluetooth_debug_metatypes.json"
+  "meta_types/qt6appbluetooth_debug_metatypes.json.gen"
+)
+
+# Per-language clean rules from dependency scanning.
+foreach(lang CXX)
+  include(CMakeFiles/appBluetooth.dir/cmake_clean_${lang}.cmake OPTIONAL)
+endforeach()

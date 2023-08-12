@@ -1,0 +1,256 @@
+[
+    {
+        "classes": [
+            {
+                "className": "BluetoothDevicesModel",
+                "object": true,
+                "qualifiedClassName": "BluetoothDevicesModel",
+                "superClasses": [
+                    {
+                        "access": "public",
+                        "name": "QAbstractListModel"
+                    }
+                ]
+            }
+        ],
+        "inputFile": "bluetoothdevicesmodel.h",
+        "outputRevision": 68
+    },
+    {
+        "classes": [
+            {
+                "classInfos": [
+                    {
+                        "name": "QML.Element",
+                        "value": "auto"
+                    },
+                    {
+                        "name": "QML.Singleton",
+                        "value": "true"
+                    }
+                ],
+                "className": "BluetoothManager",
+                "object": true,
+                "properties": [
+                    {
+                        "constant": false,
+                        "designable": true,
+                        "final": true,
+                        "index": 0,
+                        "name": "isScanning",
+                        "notify": "isScanningChanged",
+                        "read": "isScanning",
+                        "required": false,
+                        "scriptable": true,
+                        "stored": true,
+                        "type": "bool",
+                        "user": false,
+                        "write": "setIsScanning"
+                    },
+                    {
+                        "constant": false,
+                        "designable": true,
+                        "final": true,
+                        "index": 1,
+                        "name": "isPairing",
+                        "notify": "isPairingChanged",
+                        "read": "isPairing",
+                        "required": false,
+                        "scriptable": true,
+                        "stored": true,
+                        "type": "bool",
+                        "user": false,
+                        "write": "setIsPairing"
+                    }
+                ],
+                "qualifiedClassName": "BluetoothManager",
+                "signals": [
+                    {
+                        "access": "public",
+                        "name": "isScanningChanged",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "public",
+                        "name": "isPairingChanged",
+                        "returnType": "void"
+                    }
+                ],
+                "slots": [
+                    {
+                        "access": "public",
+                        "name": "showHostInfo",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "public",
+                        "name": "startScan",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "public",
+                        "arguments": [
+                            {
+                                "name": "deviceIndex",
+                                "type": "int"
+                            }
+                        ],
+                        "name": "requestPairing",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "private",
+                        "arguments": [
+                            {
+                                "name": "device",
+                                "type": "QBluetoothDeviceInfo"
+                            }
+                        ],
+                        "name": "deviceDiscovered",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "private",
+                        "arguments": [
+                            {
+                                "name": "error",
+                                "type": "QBluetoothDeviceDiscoveryAgent::Error"
+                            }
+                        ],
+                        "name": "scanError",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "private",
+                        "name": "scanFinished",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "private",
+                        "arguments": [
+                            {
+                                "name": "address",
+                                "type": "QBluetoothAddress"
+                            },
+                            {
+                                "name": "pairing",
+                                "type": "QBluetoothLocalDevice::Pairing"
+                            }
+                        ],
+                        "name": "pairingFinished",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "private",
+                        "arguments": [
+                            {
+                                "name": "error",
+                                "type": "QBluetoothLocalDevice::Error"
+                            }
+                        ],
+                        "name": "pairingError",
+                        "returnType": "void"
+                    }
+                ],
+                "superClasses": [
+                    {
+                        "access": "public",
+                        "name": "QObject"
+                    }
+                ]
+            }
+        ],
+        "inputFile": "bluetoothmanager.h",
+        "outputRevision": 68
+    },
+    {
+        "classes": [
+            {
+                "classInfos": [
+                    {
+                        "name": "QML.Element",
+                        "value": "auto"
+                    }
+                ],
+                "className": "ChatServer",
+                "object": true,
+                "qualifiedClassName": "ChatServer",
+                "signals": [
+                    {
+                        "access": "public",
+                        "arguments": [
+                            {
+                                "name": "sender",
+                                "type": "QString"
+                            },
+                            {
+                                "name": "message",
+                                "type": "QString"
+                            }
+                        ],
+                        "name": "messageReceived",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "public",
+                        "arguments": [
+                            {
+                                "name": "name",
+                                "type": "QString"
+                            }
+                        ],
+                        "name": "notifyClientConnected",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "public",
+                        "arguments": [
+                            {
+                                "name": "name",
+                                "type": "QString"
+                            }
+                        ],
+                        "name": "notifyClientDisconnected",
+                        "returnType": "void"
+                    }
+                ],
+                "slots": [
+                    {
+                        "access": "public",
+                        "arguments": [
+                            {
+                                "name": "message",
+                                "type": "QString"
+                            }
+                        ],
+                        "name": "sendMessage",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "private",
+                        "name": "clientConnected",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "private",
+                        "name": "clientDisconnected",
+                        "returnType": "void"
+                    },
+                    {
+                        "access": "private",
+                        "name": "readSocket",
+                        "returnType": "void"
+                    }
+                ],
+                "superClasses": [
+                    {
+                        "access": "public",
+                        "name": "QObject"
+                    }
+                ]
+            }
+        ],
+        "inputFile": "chatserver.h",
+        "outputRevision": 68
+    }
+]

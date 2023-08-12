@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="/qt/qml/Bluetooth/">
+    <file alias="ui/Main.qml">/home/ark/Working/Qt/Bluetooth/ui/Main.qml</file>
+    <file alias="ui/screens/HomeScreen.qml">/home/ark/Working/Qt/Bluetooth/ui/screens/HomeScreen.qml</file>
+  </qresource>
+</RCC>
+
