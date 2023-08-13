@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include <QQmlEngine>
-#include <QtQmlIntegration>
 #include <QBluetoothHostInfo>
 #include <QBluetoothDeviceInfo>
 #include <QBluetoothLocalDevice>
@@ -16,13 +15,10 @@
 class BluetoothManager : public QObject
 {
     Q_OBJECT
-    QML_ELEMENT
-    QML_SINGLETON
     Q_PROPERTY(bool isScanning READ isScanning WRITE setIsScanning NOTIFY isScanningChanged FINAL)
     Q_PROPERTY(bool isPairing READ isPairing WRITE setIsPairing NOTIFY isPairingChanged FINAL)
 public:
     static BluetoothManager &instance();
-    static BluetoothManager *create(QQmlEngine *qmlEngine, QJSEngine *jsEngine);
 
     virtual ~BluetoothManager();
 
@@ -35,10 +31,11 @@ public:
     BluetoothDevicesModel *devicesList() const;
 
 public slots:
-    void showHostInfo();
     void startScan();
     void stopScan();
+
     void requestPairing(const int &deviceIndex);
+
     void clearDevicesList();
 
 private slots:
@@ -48,6 +45,8 @@ private slots:
     void scanStopped();
 
     void pairingFinished(const QBluetoothAddress &address, QBluetoothLocalDevice::Pairing pairing);
+    void pairingDisplayPinCode(const QBluetoothAddress &address, QString pin);
+    void pairingDisplayConfirmation(const QBluetoothAddress &address, QString pin);
     void pairingError(QBluetoothLocalDevice::Error error);
 
 signals:

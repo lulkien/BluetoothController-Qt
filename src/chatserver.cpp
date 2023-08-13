@@ -1,6 +1,6 @@
 #include "chatserver.h"
 
-using namespace Qt::StringLiterals;
+//using namespace Qt::StringLiterals;
 //! [Service UUID]
 //static constexpr auto serviceUuid = "06b33a00-88e5-4389-945d-1fc0cbae1bd8"_L1;
 //! [Service UUID]
@@ -116,8 +116,8 @@ void ChatServer::sendMessage(const QString &message)
 {
     QByteArray text = message.toUtf8() + '\n';
 
-    for (QBluetoothSocket *socket : std::as_const(clientSockets))
-        socket->write(text);
+//    for (QBluetoothSocket *socket : std::as_const(clientSockets))
+//        socket->write(text);
 }
 
 void ChatServer::clientConnected()

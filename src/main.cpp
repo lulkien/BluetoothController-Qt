@@ -15,10 +15,11 @@ int main(int argc, char *argv[])
                 QCoreApplication::exit(-1);
         }, Qt::QueuedConnection);
 
+    engine.rootContext()->setContextProperty("BluetoothManager", &BluetoothManager::instance());
     engine.rootContext()->setContextProperty("DevicesList", BluetoothManager::instance().devicesList());
 
     // load main module
-    engine.loadFromModule("Bluetooth", "Main");
+    engine.load("qrc:/ui/Main.qml");
 
     return app.exec();
 }
