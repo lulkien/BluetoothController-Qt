@@ -28,20 +28,24 @@ public:
 
     bool isScanning() const;
     void setIsScanning(bool newIsScanning);
-    BluetoothDevicesModel *devicesList() const;
 
     bool isPairing() const;
     void setIsPairing(bool newIsPairing);
 
+    BluetoothDevicesModel *devicesList() const;
+
 public slots:
     void showHostInfo();
     void startScan();
+    void stopScan();
     void requestPairing(const int &deviceIndex);
+    void clearDevicesList();
 
 private slots:
     void deviceDiscovered(const QBluetoothDeviceInfo &device);
     void scanError(QBluetoothDeviceDiscoveryAgent::Error error);
     void scanFinished();
+    void scanStopped();
 
     void pairingFinished(const QBluetoothAddress &address, QBluetoothLocalDevice::Pairing pairing);
     void pairingError(QBluetoothLocalDevice::Error error);
@@ -54,7 +58,7 @@ private:
     explicit BluetoothManager(QObject *parent = nullptr);
     void initConnections();
     bool isBusy() const;
-    void makeVisibleForOther();
+    void prepareDevice();
 
     QBluetoothLocalDevice m_localDevice;
     QBluetoothDeviceDiscoveryAgent m_discoveryAgent;
@@ -63,5 +67,7 @@ private:
     bool m_isPairing;
     std::unique_ptr<BluetoothDevicesModel> m_devicesList;
 };
+
+
 
 #endif // BLUETOOTHMANAGER_H

@@ -4,7 +4,6 @@ project(Bluetooth VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(FONT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ui/fonts)
 set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 find_package(Qt6 6.5 REQUIRED COMPONENTS Quick Bluetooth)
@@ -44,8 +43,6 @@ qt6_add_qml_module(appBluetooth
 target_link_libraries(appBluetooth
     PRIVATE Qt6::Quick Qt6::Bluetooth
 )
-
-file(COPY ${FONT_SOURCE_DIR} DESTINATION ${CMAKE_BINARY_DIR})
 
 include(GNUInstallDirs)
 install(TARGETS appBluetooth

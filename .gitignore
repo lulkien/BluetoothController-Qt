@@ -1,36 +1,74 @@
-# Prerequisites
-*.d
+# CMake build directory
+/build*/
 
-# Compiled Object files
-*.slo
-*.lo
+# CMake install directory
+/install*/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+Testing/
+
+# Qt Creator related files
+*.pro.user
+*.pro.user.*
+
+# Visual Studio Code related files
+.vscode/
+
+# Xcode related files
+*.xcodeproj/
+
+# CLion related files
+.idea/
+
+# Compiled binary files
+*.exe
+*.out
+*.dll
+*.so
+*.dylib
+
+# Object files
 *.o
 *.obj
 
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
+# Compiled shared libraries
 *.a
-*.lib
 
-# Executables
-*.exe
-*.out
-*.app
+# Editor backup files
+*~
+*.swp
+*.swo
 
-# Build dir
-build/
-*.user
+# Qt generated files
+/.qmake.cache
+/.qmake.vars
+/moc_*.cxx
+/ui_*.h
+/qrc_*.cxx
+
+# macOS generated files
+.DS_Store
+
+# Windows generated files
+Thumbs.db
+
+# Linux generated files
+core
+core.*
+
+# Various build-related files
+Makefile
+Makefile.in
+*.cmake
+CMakeLists.txt.user
+
+# Local development environment files
+/.env
+
+.generated/
+.qt_plugins/
+.qtc_clangd/
+.rcc/

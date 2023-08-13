@@ -1,4 +1,5 @@
 #include "bluetoothdevicesmodel.h"
+#include "common.h"
 #include <QBluetoothAddress>
 
 BluetoothDevicesModel::BluetoothDevicesModel(QObject *parent)
@@ -30,9 +31,16 @@ QVariant BluetoothDevicesModel::data(const QModelIndex &index, int role) const
 
 void BluetoothDevicesModel::addDevice(const QBluetoothDeviceInfo &device)
 {
-    beginInsertRows(QModelIndex(), m_devices.count(), m_devices.count());
-    m_devices.append(device);
-    endInsertRows();
+    if (!m_devices.contains(device))
+    {
+        beginInsertRows(QModelIndex(), m_devices.count(), m_devices.count());
+        m_devices.append(device);
+        endInsertRows();
+    }
+    else
+    {
+        LOG_INFO << "Device found before.";
+    }
 }
 
 void BluetoothDevicesModel::clearDevicesList()

@@ -1,14 +1,12 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include "common.h"
 #include "bluetoothmanager.h"
 
 int main(int argc, char *argv[])
 {
 
     QGuiApplication app(argc, argv);
-    qSetMessagePattern(LOGGING_PATTERN);
 
     QQmlApplicationEngine engine;
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

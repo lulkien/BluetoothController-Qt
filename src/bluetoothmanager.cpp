@@ -1,6 +1,8 @@
 #include "bluetoothmanager.h"
 #include "common.h"
 
+#define BLE_SCAN_TIMEOUT    5000   // 5 secs
+
 BluetoothManager &BluetoothManager::instance()
 {
     static BluetoothManager self;
@@ -16,7 +18,8 @@ BluetoothManager *BluetoothManager::create(QQmlEngine *qmlEngine, QJSEngine *jsE
 
 BluetoothManager::~BluetoothManager()
 {
-
+    LOG_DEBUG;
+    m_localDevice.setHostMode(QBluetoothLocalDevice::HostConnectable);
 }
 
 void BluetoothManager::showHostInfo()
@@ -34,7 +37,23 @@ void BluetoothManager::startScan()
     }
     setIsScanning(true);
     m_devicesList->clearDevicesList();
-    m_discoveryAgent.start(QBluetoothDeviceDiscoveryAgent::ClassicMethod);
+    m_discoveryAgent.start(QBluetoothDeviceDiscoveryAgent::LowEnergyMethod);
+}
+
+void BluetoothManager::stopScan()
+{
+    LOG_DEBUG << "Request stop discovery";
+    if (!m_isScanning)
+    {
+        LOG_DEBUG << "NO SCANNING, HOW TO STOP DAWG...";
+        return;
+    }
+    if (m_isPairing)
+    {
+            LOG_DEBUG << "DEVICE IS BUSY... TRY AGAIN LATER.";";
+        return;
+    }
+    m_discoveryAgent.stop();
 }
 
 void BluetoothManager::requestPairing(const int &deviceIndex)
@@ -52,31 +71,46 @@ void BluetoothManager::requestPairing(const int &deviceIndex)
     LOG_DEBUG << "Address:" << deviceInfo.address();
 
     QBluetoothLocalDevice::Pairing pairingStatus = m_localDevice.pairingStatus(deviceInfo.address());
-    LOG_DEBUG << "Pairing Status: " << pairingStatus;
+    LOG_DEBUG << "Pair Status: " << pairingStatus;
     if (QBluetoothLocalDevice::Unpaired == pairingStatus)
     {
         setIsPairing(true);
-        m_localDevice.requestPairing(deviceInfo.address(), QBluetoothLocalDevice::Paired);
+        m_localDevice.requestPairing(deviceInfo.address(), QBluetoothLocalDevice::AuthorizedPaired);
     }
 
+}
+
+void BluetoothManager::clearDevicesList()
+{
+    LOG_DEBUG;
+    m_devicesList->clearDevicesList();
 }
 
 void BluetoothManager::deviceDiscovered(const QBluetoothDeviceInfo &device)
 {
     // Process the discovered device
     LOG_DEBUG << "Discovered: Name -" << device.name() << "| Address -" << device.address().toString();
-    m_devicesList->addDevice(device);
+    LOG_DEBUG << "Pair Status: " << m_localDevice.pairingStatus(device.address());
+    if (m_localDevice.pairingStatus(device.address()) == QBluetoothLocalDevice::Unpaired)
+        m_devicesList->addDevice(device);
 }
 
 void BluetoothManager::scanError(QBluetoothDeviceDiscoveryAgent::Error error)
 {
     LOG_ERROR << "An error occur while scanning:" << error;
+    LOG_ERROR << "String: " << m_discoveryAgent.errorString();
     setIsScanning(false);
 }
 
 void BluetoothManager::scanFinished()
 {
     LOG_DEBUG << "Scan finished";
+    setIsScanning(false);
+}
+
+void BluetoothManager::scanStopped()
+{
+    LOG_DEBUG << "Scan stopped";
     setIsScanning(false);
 }
 
@@ -102,6 +136,7 @@ BluetoothManager::BluetoothManager(QObject *parent)
 {
     LOG_DEBUG << "Create";
     initConnections();
+    prepareDevice();
     QQmlEngine::setObjectOwnership(this, QQmlEngine::CppOwnership);
 }
 
@@ -114,6 +149,8 @@ void BluetoothManager::initConnections()
             this, &BluetoothManager::scanError);
     connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::finished,
             this, &BluetoothManager::scanFinished);
+    connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::canceled,
+            this, &BluetoothManager::scanStopped);
 
     // Local Device
     connect(&m_localDevice, &QBluetoothLocalDevice::pairingFinished,
@@ -127,9 +164,14 @@ bool BluetoothManager::isBusy() const
     return isScanning() || isPairing();
 }
 
-void BluetoothManager::makeVisibleForOther()
+void BluetoothManager::prepareDevice()
 {
+    LOG_DEBUG;
+    if (m_localDevice.hostMode() == QBluetoothLocalDevice::HostPoweredOff)
+        m_localDevice.powerOn();
+    m_localDevice.setHostMode(QBluetoothLocalDevice::HostDiscoverable);
 
+    m_discoveryAgent.setLowEnergyDiscoveryTimeout(BLE_SCAN_TIMEOUT);
 }
 
 bool BluetoothManager::isScanning() const
@@ -162,3 +204,5 @@ void BluetoothManager::setIsPairing(bool newIsPairing)
     m_isPairing = newIsPairing;
     emit isPairingChanged();
 }
+
+

@@ -37,6 +37,10 @@ Window {
                     console.warn("Clicked: scanButton")
                     BluetoothManager.startScan()
                 }
+                onPressAndHold: {
+                    console.warn("onPressAndHold: scanButton")
+                    BluetoothManager.stopScan()
+                }
             }
         }
 
@@ -44,6 +48,7 @@ Window {
             id: listArea
             width: scanButton.width
             height: root.height - layout.anchors.margins * 2 - scanButton.height - layout.spacing
+            color: "lightgray"
             border.color: "black"
             clip: true
             ListView {
