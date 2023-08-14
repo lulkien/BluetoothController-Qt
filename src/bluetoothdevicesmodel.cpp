@@ -80,12 +80,19 @@ QBluetoothDeviceInfo BluetoothDevicesModel::at(const int &index) const
     return m_devices.at(index);
 }
 
-void BluetoothDevicesModel::setConnectedDevice(QBluetoothDeviceInfo *device)
+void BluetoothDevicesModel::setConnectedDevice(QBluetoothDeviceInfo *targetDevice)
 {
     // delete old info and make new one
     if (nullptr != m_connectedDevice)
         delete m_connectedDevice;
-    m_connectedDevice = device;
+
+    if (nullptr != targetDevice)
+        LOG_INF << "Connected to" << targetDevice->name()
+                << ", address:" << targetDevice->address();
+    else
+        LOG_INF << "Removed connection.";
+
+    m_connectedDevice = targetDevice;
 }
 
 QBluetoothDeviceInfo *BluetoothDevicesModel::connectedDevice() const

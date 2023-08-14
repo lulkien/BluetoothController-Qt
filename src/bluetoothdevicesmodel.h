@@ -23,7 +23,7 @@ public:
     void clearDevicesList();
 
     QBluetoothDeviceInfo at(const int &index) const;
-    void setConnectedDevice(QBluetoothDeviceInfo *device);
+    void setConnectedDevice(QBluetoothDeviceInfo *targetDevice);
     QBluetoothDeviceInfo *connectedDevice() const;
 
 protected:

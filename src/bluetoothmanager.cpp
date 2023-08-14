@@ -157,6 +157,10 @@ void BluetoothManager::prepareDevice()
 void BluetoothManager::makeNewConnection(const QBluetoothDeviceInfo &device)
 {
     LOG_DBG;
+
+    // Stop discovery agent
+    m_discoveryAgent.stop();
+
     m_bleController = QLowEnergyController::createCentral(device, this);
     m_bleController->setRemoteAddressType(QLowEnergyController::PublicAddress);
 
@@ -168,18 +172,18 @@ void BluetoothManager::makeNewConnection(const QBluetoothDeviceInfo &device)
             });
 
     connect(m_bleController, &QLowEnergyController::connected,
-            this, []() {
+            this, [device, this]() {
                 LOG_INF << "Controller connected.";
+                m_devicesModel->setConnectedDevice(new QBluetoothDeviceInfo(device));
             });
 
     connect(m_bleController, &QLowEnergyController::disconnected,
-            this, []() {
+            this, [this]() {
                 LOG_INF << "LowEnergy controller disconnected.";
+                m_devicesModel->setConnectedDevice(nullptr);
             });
 
-    // Connect
     m_bleController->connectToDevice();
-    m_devicesModel->setConnectedDevice(new QBluetoothDeviceInfo(device));
 }
 
 bool BluetoothManager::isScanning() const
