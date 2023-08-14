@@ -35,6 +35,7 @@ public slots:
     void stopScan();
 
     void requestPairing(const int &deviceIndex);
+    void requestUnpair(const int &deviceIndex);
 
     void clearDevicesList();
 

@@ -67,10 +67,65 @@ Window {
             width: listDevices.width
             height: listDevices.height / 6
             Text {
-                anchors.centerIn: parent
-                font.pixelSize: 30
-                text: "Name: " + model.deviceName + " | Address: " + model.deviceAddress
+                id: name
+                width: (parent.width - 2 * parent.height) / 2
+                anchors.left: parent.left
+                anchors.verticalCenter: parent.verticalCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.pixelSize: 20
+                text: model.deviceName
             }
+
+            Text {
+                id: address
+                width: name.width / 2
+                anchors.left: name.right
+                anchors.verticalCenter: parent.verticalCenter
+                horizontalAlignment: Text.AlignHCenter
+                font.pixelSize: 20
+                text: model.deviceAddress
+            }
+
+            Rectangle {
+                id: unpairButton
+                anchors.right: parent.right
+                anchors.rightMargin: parent.height * 0.05
+                anchors.verticalCenter: parent.verticalCenter
+                height: parent.height * 0.9
+                width: height
+                border.color: "black"
+                Text {
+                    anchors.centerIn: parent
+                    text: "Unpair"
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        BluetoothManager.requestUnpair(index)
+                    }
+                }
+            }
+
+            Rectangle {
+                id: pairButton
+                anchors.right: unpairButton.left
+                anchors.rightMargin: parent.height * 0.05
+                anchors.verticalCenter: parent.verticalCenter
+                height: parent.height * 0.9
+                width: height
+                border.color: "black"
+                Text {
+                    anchors.centerIn: parent
+                    text: "Pair"
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        BluetoothManager.requestPairing(index)
+                    }
+                }
+            }
+
             Rectangle {
                 anchors.bottom: delegateItem.bottom
                 anchors.horizontalCenter: delegateItem.horizontalCenter
@@ -78,16 +133,6 @@ Window {
                 height: 1
                 width: delegateItem.width * 0.8
             }
-            MouseArea {
-                anchors.fill: parent
-                onPressAndHold: {
-                    BluetoothManager.requestPairing(index)
-                }
-            }
         }
-    }
-
-    Component.onCompleted: {
-        BluetoothManager.showHostInfo()
     }
 }

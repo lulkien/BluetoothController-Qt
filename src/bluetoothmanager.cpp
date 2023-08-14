@@ -65,7 +65,30 @@ void BluetoothManager::requestPairing(const int &deviceIndex)
         setIsPairing(true);
         m_localDevice.requestPairing(deviceInfo.address(), QBluetoothLocalDevice::AuthorizedPaired);
     }
+}
 
+void BluetoothManager::requestUnpair(const int &deviceIndex)
+{
+    if (isBusy())
+    {
+        LOG_DEBUG << "DEVICE IS BUSY... TRY AGAIN LATER.";
+        return;
+    }
+
+    LOG_WARNING << "Index:" << deviceIndex;
+
+    const QBluetoothDeviceInfo deviceInfo = m_devicesList->at(deviceIndex);
+    LOG_DEBUG << "Name:" << deviceInfo.name();
+    LOG_DEBUG << "Address:" << deviceInfo.address();
+
+    QBluetoothLocalDevice::Pairing pairingStatus = m_localDevice.pairingStatus(deviceInfo.address());
+    LOG_DEBUG << "Pair Status: " << pairingStatus;
+    if (QBluetoothLocalDevice::Unpaired == pairingStatus)
+    {
+        LOG_DEBUG << "NOT PAIRED.";
+        return;
+    }
+    m_localDevice.requestPairing(deviceInfo.address(), QBluetoothLocalDevice::Unpaired);
 }
 
 void BluetoothManager::clearDevicesList()
@@ -118,6 +141,7 @@ void BluetoothManager::pairingDisplayPinCode(const QBluetoothAddress &address, Q
 void BluetoothManager::pairingDisplayConfirmation(const QBluetoothAddress &address, QString pin)
 {
     LOG_DEBUG << "Address:" << address.toString() << "| PIN:" << pin;
+    m_localDevice.pairingConfirmation(true);
 }
 
 void BluetoothManager::pairingError(QBluetoothLocalDevice::Error error)

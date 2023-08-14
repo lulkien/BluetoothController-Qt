@@ -4,6 +4,11 @@
 #include <QBluetoothDeviceInfo>
 #include <QAbstractListModel>
 
+struct BluetoothDeviceData {
+    QBluetoothDeviceInfo info;
+    int pairStatus;                 // 0: unpair, 1: paired, 2: authorized pair
+};
+
 class BluetoothDevicesModel : public QAbstractListModel
 {
     Q_OBJECT
