@@ -3,12 +3,11 @@
 
 #include <QObject>
 #include <QQmlEngine>
-#include <QBluetoothHostInfo>
 #include <QBluetoothDeviceInfo>
 #include <QBluetoothLocalDevice>
 #include <QBluetoothDeviceDiscoveryAgent>
-#include <QBluetoothServer>
-#include <QBluetoothServiceInfo>
+#include <QLowEnergyController>
+#include <QLowEnergyService>
 #include <memory>
 #include "bluetoothdevicesmodel.h"
 
@@ -34,8 +33,7 @@ public slots:
     void startScan();
     void stopScan();
 
-    void requestPairing(const int &deviceIndex);
-    void requestUnpair(const int &deviceIndex);
+    void connectToDevice(const int &deviceIndex);
 
     void clearDevicesList();
 
@@ -44,11 +42,6 @@ private slots:
     void scanError(QBluetoothDeviceDiscoveryAgent::Error error);
     void scanFinished();
     void scanStopped();
-
-    void pairingFinished(const QBluetoothAddress &address, QBluetoothLocalDevice::Pairing pairing);
-    void pairingDisplayPinCode(const QBluetoothAddress &address, QString pin);
-    void pairingDisplayConfirmation(const QBluetoothAddress &address, QString pin);
-    void pairingError(QBluetoothLocalDevice::Error error);
 
 signals:
     void isScanningChanged();
@@ -59,13 +52,15 @@ private:
     void initConnections();
     bool isBusy() const;
     void prepareDevice();
+    void makeNewConnection(const QBluetoothDeviceInfo &device);
 
-    QBluetoothLocalDevice m_localDevice;
+    QBluetoothLocalDevice  m_localDevice;
     QBluetoothDeviceDiscoveryAgent m_discoveryAgent;
+    QLowEnergyController *m_bleController;
 
     bool m_isScanning;
     bool m_isPairing;
-    std::unique_ptr<BluetoothDevicesModel> m_devicesList;
+    std::unique_ptr<BluetoothDevicesModel> m_devicesModel;
 };
 
 

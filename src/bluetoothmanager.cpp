@@ -1,3 +1,4 @@
+#include <QtGlobal>
 #include "bluetoothmanager.h"
 #include "common.h"
 
@@ -11,152 +12,116 @@ BluetoothManager &BluetoothManager::instance()
 
 BluetoothManager::~BluetoothManager()
 {
-    LOG_DEBUG;
+    LOG_DBG;
     m_localDevice.setHostMode(QBluetoothLocalDevice::HostConnectable);
 }
 
 void BluetoothManager::startScan()
 {
-    LOG_DEBUG;
+    LOG_DBG;
     if (isBusy())
     {
-        LOG_DEBUG << "DEVICE IS BUSY... TRY AGAIN LATER.";
+        LOG_DBG << "DEVICE IS BUSY... TRY AGAIN LATER.";
         return;
     }
     setIsScanning(true);
-    m_devicesList->clearDevicesList();
+    m_devicesModel->clearDevicesList();
     m_discoveryAgent.start(QBluetoothDeviceDiscoveryAgent::ClassicMethod);
 }
 
 void BluetoothManager::stopScan()
 {
-    LOG_DEBUG << "Request stop discovery";
+    LOG_DBG << "Request stop discovery";
     if (!m_isScanning)
     {
-        LOG_DEBUG << "NO SCANNING, HOW TO STOP DAWG...";
+        LOG_DBG << "NO SCANNING, HOW TO STOP DAWG...";
         return;
     }
     if (m_isPairing)
     {
-        LOG_DEBUG << "DEVICE IS BUSY... TRY AGAIN LATER.";
+        LOG_DBG << "DEVICE IS BUSY... TRY AGAIN LATER.";
         return;
     }
     m_discoveryAgent.stop();
 }
 
-void BluetoothManager::requestPairing(const int &deviceIndex)
+void BluetoothManager::connectToDevice(const int &deviceIndex)
 {
-    if (isBusy())
+    // get the info of device we want to connect
+    // get the info of current connected device
+    // if there is no connection -> make new one
+    // if there is an connection with same device -> ignore and return
+    // if there is an connection -> disconnect it and make new one
+
+    QBluetoothDeviceInfo targetDevice = m_devicesModel->at(deviceIndex);
+    QBluetoothDeviceInfo *currentConnectedDevice = m_devicesModel->connectedDevice();
+
+    // Dont care about anything, just disconnect the BLE Controller
+    if (nullptr != m_bleController)
     {
-        LOG_DEBUG << "DEVICE IS BUSY... TRY AGAIN LATER.";
+        m_bleController->disconnectFromDevice();
+        delete m_bleController;
+    }
+    m_bleController = nullptr;
+
+    // if current connected device is NULL -> no connection -> make new connection
+    if (nullptr == currentConnectedDevice)
+    {
+        makeNewConnection(targetDevice);
         return;
     }
 
-    LOG_WARNING << "Index:" << deviceIndex;
-
-    const QBluetoothDeviceInfo deviceInfo = m_devicesList->at(deviceIndex);
-    LOG_DEBUG << "Name:" << deviceInfo.name();
-    LOG_DEBUG << "Address:" << deviceInfo.address();
-
-    QBluetoothLocalDevice::Pairing pairingStatus = m_localDevice.pairingStatus(deviceInfo.address());
-    LOG_DEBUG << "Pair Status: " << pairingStatus;
-    if (QBluetoothLocalDevice::Unpaired == pairingStatus)
+    if (currentConnectedDevice->address() == targetDevice.address())
     {
-        setIsPairing(true);
-        m_localDevice.requestPairing(deviceInfo.address(), QBluetoothLocalDevice::AuthorizedPaired);
-    }
-}
-
-void BluetoothManager::requestUnpair(const int &deviceIndex)
-{
-    if (isBusy())
-    {
-        LOG_DEBUG << "DEVICE IS BUSY... TRY AGAIN LATER.";
+        LOG_WRN << "Trying to make new connection with same device.";
         return;
     }
 
-    LOG_WARNING << "Index:" << deviceIndex;
-
-    const QBluetoothDeviceInfo deviceInfo = m_devicesList->at(deviceIndex);
-    LOG_DEBUG << "Name:" << deviceInfo.name();
-    LOG_DEBUG << "Address:" << deviceInfo.address();
-
-    QBluetoothLocalDevice::Pairing pairingStatus = m_localDevice.pairingStatus(deviceInfo.address());
-    LOG_DEBUG << "Pair Status: " << pairingStatus;
-    if (QBluetoothLocalDevice::Unpaired == pairingStatus)
-    {
-        LOG_DEBUG << "NOT PAIRED.";
-        return;
-    }
-    m_localDevice.requestPairing(deviceInfo.address(), QBluetoothLocalDevice::Unpaired);
+    m_devicesModel->setConnectedDevice(nullptr);
+    makeNewConnection(targetDevice);
 }
 
 void BluetoothManager::clearDevicesList()
 {
-    LOG_DEBUG;
-    m_devicesList->clearDevicesList();
+    LOG_DBG;
+    m_devicesModel->clearDevicesList();
 }
 
 void BluetoothManager::deviceDiscovered(const QBluetoothDeviceInfo &device)
 {
     // Process the discovered device
-    LOG_DEBUG << "Discovered: Name -" << device.name() << "| Address -" << device.address().toString();
-    LOG_DEBUG << "Pair Status: " << m_localDevice.pairingStatus(device.address());
+    LOG_DBG << "Discovered: Name -" << device.name() << "| Address -" << device.address().toString();
+    LOG_DBG << "Pair Status: " << m_localDevice.pairingStatus(device.address());
     if (m_localDevice.pairingStatus(device.address()) == QBluetoothLocalDevice::Unpaired)
-        m_devicesList->addDevice(device);
+        m_devicesModel->addDevice(device);
 }
 
 void BluetoothManager::scanError(QBluetoothDeviceDiscoveryAgent::Error error)
 {
-    LOG_ERROR << "An error occur while scanning:" << error;
-    LOG_ERROR << "String: " << m_discoveryAgent.errorString();
+    LOG_ERR << "An error occur while scanning:" << error;
+    LOG_ERR << "String: " << m_discoveryAgent.errorString();
     setIsScanning(false);
 }
 
 void BluetoothManager::scanFinished()
 {
-    LOG_DEBUG << "Scan finished";
+    LOG_DBG << "Scan finished";
     setIsScanning(false);
 }
 
 void BluetoothManager::scanStopped()
 {
-    LOG_DEBUG << "Scan stopped";
+    LOG_DBG << "Scan stopped";
     setIsScanning(false);
-}
-
-void BluetoothManager::pairingFinished(const QBluetoothAddress &address, QBluetoothLocalDevice::Pairing pairing)
-{
-    LOG_WARNING << "Pairing completed";
-    LOG_DEBUG << "Address:" << address.toString();
-    LOG_DEBUG << "Pairing Status:" << pairing;
-    setIsPairing(false);
-}
-
-void BluetoothManager::pairingDisplayPinCode(const QBluetoothAddress &address, QString pin)
-{
-    LOG_DEBUG << "Address:" << address.toString() << "| PIN:" << pin;
-}
-
-void BluetoothManager::pairingDisplayConfirmation(const QBluetoothAddress &address, QString pin)
-{
-    LOG_DEBUG << "Address:" << address.toString() << "| PIN:" << pin;
-    m_localDevice.pairingConfirmation(true);
-}
-
-void BluetoothManager::pairingError(QBluetoothLocalDevice::Error error)
-{
-    LOG_ERROR << "An error occur while pairing:" << error;
-    setIsPairing(false);
 }
 
 BluetoothManager::BluetoothManager(QObject *parent)
     : QObject           { parent }
     , m_isScanning      { false }
     , m_isPairing       { false }
-    , m_devicesList     { std::make_unique<BluetoothDevicesModel>() }
+    , m_devicesModel     { std::make_unique<BluetoothDevicesModel>() }
 {
-    LOG_DEBUG << "Create";
+    LOG_DBG << "Create";
     initConnections();
     prepareDevice();
     QQmlEngine::setObjectOwnership(this, QQmlEngine::CppOwnership);
@@ -173,16 +138,6 @@ void BluetoothManager::initConnections()
             this, &BluetoothManager::scanFinished);
     connect(&m_discoveryAgent, &QBluetoothDeviceDiscoveryAgent::canceled,
             this, &BluetoothManager::scanStopped);
-
-    // Local Device
-    connect(&m_localDevice, &QBluetoothLocalDevice::pairingFinished,
-            this, &BluetoothManager::pairingFinished);
-    connect(&m_localDevice, &QBluetoothLocalDevice::pairingDisplayPinCode,
-            this, &BluetoothManager::pairingDisplayPinCode);
-    connect(&m_localDevice, &QBluetoothLocalDevice::pairingDisplayConfirmation,
-            this, &BluetoothManager::pairingDisplayConfirmation);
-    connect(&m_localDevice, &QBluetoothLocalDevice::error,
-            this, &BluetoothManager::pairingError);
 }
 
 bool BluetoothManager::isBusy() const
@@ -192,12 +147,39 @@ bool BluetoothManager::isBusy() const
 
 void BluetoothManager::prepareDevice()
 {
-    LOG_DEBUG;
+    LOG_DBG;
     if (m_localDevice.hostMode() == QBluetoothLocalDevice::HostPoweredOff)
         m_localDevice.powerOn();
     m_localDevice.setHostMode(QBluetoothLocalDevice::HostDiscoverable);
+    //    m_discoveryAgent.setLowEnergyDiscoveryTimeout(BLE_SCAN_TIMEOUT);
+}
 
-//    m_discoveryAgent.setLowEnergyDiscoveryTimeout(BLE_SCAN_TIMEOUT);
+void BluetoothManager::makeNewConnection(const QBluetoothDeviceInfo &device)
+{
+    LOG_DBG;
+    m_bleController = QLowEnergyController::createCentral(device, this);
+    m_bleController->setRemoteAddressType(QLowEnergyController::PublicAddress);
+
+    // Connect signal/slot
+    connect(m_bleController, QOverload<QLowEnergyController::Error>::of(&QLowEnergyController::error),
+            this, [](QLowEnergyController::Error error) {
+                LOG_ERR << "Connection error: " << error;
+                return;
+            });
+
+    connect(m_bleController, &QLowEnergyController::connected,
+            this, []() {
+                LOG_INF << "Controller connected.";
+            });
+
+    connect(m_bleController, &QLowEnergyController::disconnected,
+            this, []() {
+                LOG_INF << "LowEnergy controller disconnected.";
+            });
+
+    // Connect
+    m_bleController->connectToDevice();
+    m_devicesModel->setConnectedDevice(new QBluetoothDeviceInfo(device));
 }
 
 bool BluetoothManager::isScanning() const
@@ -215,7 +197,7 @@ void BluetoothManager::setIsScanning(bool newIsScanning)
 
 BluetoothDevicesModel *BluetoothManager::devicesList() const
 {
-    return m_devicesList.get();
+    return m_devicesModel.get();
 }
 
 bool BluetoothManager::isPairing() const

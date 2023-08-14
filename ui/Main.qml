@@ -25,19 +25,17 @@ Window {
             color: BluetoothManager.isScanning ? "gray" : "white"
             Text {
                 anchors.centerIn: parent
-                font.pixelSize: 30
+                font.pixelSize: 25
                 font.bold: true
-                text: "Scan on"
+                text: "Click to scan. Press and hold to cancel stop."
                 color: BluetoothManager.isScanning ? "white" : "black"
             }
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    console.warn("Clicked: scanButton")
                     BluetoothManager.startScan()
                 }
                 onPressAndHold: {
-                    console.warn("onPressAndHold: scanButton")
                     BluetoothManager.stopScan()
                 }
             }
@@ -67,63 +65,12 @@ Window {
             width: listDevices.width
             height: listDevices.height / 6
             Text {
-                id: name
-                width: (parent.width - 2 * parent.height) / 2
-                anchors.left: parent.left
-                anchors.verticalCenter: parent.verticalCenter
+                id: deviceInfo
+                anchors.centerIn: parent
                 horizontalAlignment: Text.AlignHCenter
                 font.pixelSize: 20
-                text: model.deviceName
-            }
-
-            Text {
-                id: address
-                width: name.width / 2
-                anchors.left: name.right
-                anchors.verticalCenter: parent.verticalCenter
-                horizontalAlignment: Text.AlignHCenter
-                font.pixelSize: 20
-                text: model.deviceAddress
-            }
-
-            Rectangle {
-                id: unpairButton
-                anchors.right: parent.right
-                anchors.rightMargin: parent.height * 0.05
-                anchors.verticalCenter: parent.verticalCenter
-                height: parent.height * 0.9
-                width: height
-                border.color: "black"
-                Text {
-                    anchors.centerIn: parent
-                    text: "Unpair"
-                }
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        BluetoothManager.requestUnpair(index)
-                    }
-                }
-            }
-
-            Rectangle {
-                id: pairButton
-                anchors.right: unpairButton.left
-                anchors.rightMargin: parent.height * 0.05
-                anchors.verticalCenter: parent.verticalCenter
-                height: parent.height * 0.9
-                width: height
-                border.color: "black"
-                Text {
-                    anchors.centerIn: parent
-                    text: "Pair"
-                }
-                MouseArea {
-                    anchors.fill: parent
-                    onClicked: {
-                        BluetoothManager.requestPairing(index)
-                    }
-                }
+                textFormat: Text.RichText
+                text: qsTr("<b>Name:</b> %1<br><b>Address:</b> %2").arg(model.deviceName).arg(model.deviceAddress)
             }
 
             Rectangle {
@@ -132,6 +79,14 @@ Window {
                 color: "black"
                 height: 1
                 width: delegateItem.width * 0.8
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: {
+                    console.warn("Request make connection to", model.deviceName, "at address", model.deviceAddress)
+                    BluetoothManager.connectToDevice(index)
+                }
             }
         }
     }

@@ -68,7 +68,4 @@ CMakeLists.txt.user
 # Local development environment files
 /.env
 
-.generated/
-.qt_plugins/
-.qtc_clangd/
-.rcc/
+examples/

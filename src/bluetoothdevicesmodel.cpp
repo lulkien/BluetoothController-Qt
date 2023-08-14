@@ -3,9 +3,17 @@
 #include <QBluetoothAddress>
 
 BluetoothDevicesModel::BluetoothDevicesModel(QObject *parent)
-    : QAbstractListModel{parent}
+    : QAbstractListModel    { parent }
+    , m_connectedDevice     { nullptr }
 {
 
+}
+
+BluetoothDevicesModel::~BluetoothDevicesModel()
+{
+    if (nullptr != m_connectedDevice)
+        delete m_connectedDevice;
+    m_connectedDevice = nullptr;
 }
 
 int BluetoothDevicesModel::rowCount(const QModelIndex &parent) const
@@ -29,8 +37,9 @@ QVariant BluetoothDevicesModel::data(const QModelIndex &index, int role) const
     return QVariant();
 }
 
-void BluetoothDevicesModel::addDevice(const QBluetoothDeviceInfo &device)
+void BluetoothDevicesModel::addDevice(const QBluetoothDeviceInfo &newDevice)
 {
+#if 0
     if (!m_devices.contains(device))
     {
         beginInsertRows(QModelIndex(), m_devices.count(), m_devices.count());
@@ -41,11 +50,25 @@ void BluetoothDevicesModel::addDevice(const QBluetoothDeviceInfo &device)
     {
         LOG_INFO << "Device found before.";
     }
+#else
+    foreach (QBluetoothDeviceInfo device, m_devices)
+    {
+        if (device.address() == newDevice.address())
+        {
+            LOG_DBG << "Address" << newDevice.address() << "was found. Ignore.";
+            return;
+        }
+    }
+    beginInsertRows(QModelIndex(), m_devices.count(), m_devices.count());
+    m_devices.append(newDevice);
+    endInsertRows();
+#endif
 }
 
 void BluetoothDevicesModel::clearDevicesList()
 {
-    if (!m_devices.isEmpty()) {
+    if (!m_devices.isEmpty())
+    {
         beginRemoveRows(QModelIndex(), 0, m_devices.count() - 1);
         m_devices.clear();
         endRemoveRows();
@@ -55,6 +78,19 @@ void BluetoothDevicesModel::clearDevicesList()
 QBluetoothDeviceInfo BluetoothDevicesModel::at(const int &index) const
 {
     return m_devices.at(index);
+}
+
+void BluetoothDevicesModel::setConnectedDevice(QBluetoothDeviceInfo *device)
+{
+    // delete old info and make new one
+    if (nullptr != m_connectedDevice)
+        delete m_connectedDevice;
+    m_connectedDevice = device;
+}
+
+QBluetoothDeviceInfo *BluetoothDevicesModel::connectedDevice() const
+{
+    return m_connectedDevice;
 }
 
 QHash<int, QByteArray> BluetoothDevicesModel::roleNames() const
