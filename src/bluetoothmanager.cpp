@@ -198,16 +198,27 @@ void BluetoothManager::makeNewConnection(const QBluetoothDeviceInfo &device)
                 return;
             });
 
+    connect(m_bleController, &QLowEnergyController::stateChanged,
+            this, [](QLowEnergyController::ControllerState state) {
+                LOG_DBG << "Conntroller State: ->" << state;
+            });
+
     connect(m_bleController, &QLowEnergyController::connected,
             this, [device, this]() {
                 LOG_INF << "Controller connected.";
                 m_devicesModel->setConnectedAddress(device.address());
+                m_bleController->discoverServices();
             });
 
     connect(m_bleController, &QLowEnergyController::disconnected,
             this, [this]() {
                 LOG_INF << "LowEnergy controller disconnected.";
                 m_devicesModel->setConnectedAddress(QString());
+            });
+
+    connect(m_bleController, &QLowEnergyController::serviceDiscovered,
+            this, [](const QBluetoothUuid &newService) {
+                LOG_DBG << "Found service:" << newService;
             });
 
     // pairing before make new connection if it not paired
@@ -228,6 +239,16 @@ void BluetoothManager::makeNewConnection(const QBluetoothDeviceInfo &device)
     // Just connect to device
     m_bleController->connectToDevice();
 #endif
+}
+
+void BluetoothManager::scanAvailableServices()
+{
+    if (nullptr == m_bleController)
+    {
+        LOG_WRN << "Cannot scan if m_bleController not available.";
+        return;
+    }
+    m_bleController->discoverServices();
 }
 
 bool BluetoothManager::isScanning() const

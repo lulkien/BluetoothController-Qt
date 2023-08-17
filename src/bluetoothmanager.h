@@ -54,6 +54,7 @@ private:
     void initConnections();
     void prepareDevice();
     void makeNewConnection(const QBluetoothDeviceInfo &device);
+    void scanAvailableServices();
 
     QBluetoothLocalDevice  m_localDevice;
     QBluetoothDeviceDiscoveryAgent m_discoveryAgent;
