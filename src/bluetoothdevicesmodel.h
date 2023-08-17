@@ -23,8 +23,9 @@ public:
     void clearDevicesList();
 
     QBluetoothDeviceInfo at(const int &index) const;
-    void setConnectedDevice(QBluetoothDeviceInfo *targetDevice);
-    QBluetoothDeviceInfo *connectedDevice() const;
+    void setConnectedAddress(const QBluetoothAddress &newAddress);
+    void setConnectedAddress(const QString &newAddress);
+    QString connectedAddress() const;
 
 protected:
     QHash<int, QByteArray> roleNames() const override;
@@ -33,7 +34,7 @@ public slots:
 
 private:
     QList<QBluetoothDeviceInfo> m_devices;
-    QBluetoothDeviceInfo *m_connectedDevice;    // nullptr if not connect with any device
+    QString m_connectedAddress;    // EMPTY string if not connect with any device
 };
 
 #endif // BLUETOOTHDEVICESMODEL_H

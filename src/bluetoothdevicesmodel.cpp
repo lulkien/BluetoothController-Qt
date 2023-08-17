@@ -4,16 +4,14 @@
 
 BluetoothDevicesModel::BluetoothDevicesModel(QObject *parent)
     : QAbstractListModel    { parent }
-    , m_connectedDevice     { nullptr }
+    , m_connectedAddress    { QString() }
 {
 
 }
 
 BluetoothDevicesModel::~BluetoothDevicesModel()
 {
-    if (nullptr != m_connectedDevice)
-        delete m_connectedDevice;
-    m_connectedDevice = nullptr;
+
 }
 
 int BluetoothDevicesModel::rowCount(const QModelIndex &parent) const
@@ -80,24 +78,24 @@ QBluetoothDeviceInfo BluetoothDevicesModel::at(const int &index) const
     return m_devices.at(index);
 }
 
-void BluetoothDevicesModel::setConnectedDevice(QBluetoothDeviceInfo *targetDevice)
+void BluetoothDevicesModel::setConnectedAddress(const QBluetoothAddress &newAddress)
 {
-    // delete old info and make new one
-    if (nullptr != m_connectedDevice)
-        delete m_connectedDevice;
-
-    if (nullptr != targetDevice)
-        LOG_INF << "Connected to" << targetDevice->name()
-                << ", address:" << targetDevice->address();
-    else
-        LOG_INF << "Removed connection.";
-
-    m_connectedDevice = targetDevice;
+    setConnectedAddress(newAddress.toString());
 }
 
-QBluetoothDeviceInfo *BluetoothDevicesModel::connectedDevice() const
+void BluetoothDevicesModel::setConnectedAddress(const QString &newAddress)
 {
-    return m_connectedDevice;
+    if (newAddress.isEmpty())
+        LOG_INF << "Removed connection.";
+    else
+        LOG_INF << "Connected to" << newAddress;
+
+    m_connectedAddress = newAddress;
+}
+
+QString BluetoothDevicesModel::connectedAddress() const
+{
+    return m_connectedAddress;
 }
 
 QHash<int, QByteArray> BluetoothDevicesModel::roleNames() const
