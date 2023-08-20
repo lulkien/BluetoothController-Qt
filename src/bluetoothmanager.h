@@ -2,64 +2,37 @@
 #define BLUETOOTHMANAGER_H
 
 #include <QObject>
-#include <QQmlEngine>
-#include <QBluetoothDeviceInfo>
+#include <QBluetoothAddress>
+#include <QBluetoothServiceInfo>
+#include <QBluetoothUuid>
+#include <QBluetoothServiceDiscoveryAgent>
+#include <QBluetoothHostInfo>
 #include <QBluetoothLocalDevice>
-#include <QBluetoothDeviceDiscoveryAgent>
-#include <QLowEnergyController>
-#include <QLowEnergyService>
-#include <QBluetoothSocket>
-#include <memory>
-#include "bluetoothdevicesmodel.h"
+#include "chatserver.h"
 
 class BluetoothManager : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(bool isScanning READ isScanning WRITE setIsScanning NOTIFY isScanningChanged FINAL)
-
 public:
     static BluetoothManager &instance();
     virtual ~BluetoothManager();
-    bool isScanning() const;
-    void setIsScanning(bool newIsScanning);
-    BluetoothDevicesModel *devicesList() const;
-
-public slots:
-    void startScan();
-    void stopScan();
-    void connectToDevice(const int &deviceIndex);
-    void clearDevicesList();
-
-private slots:
-    // discovery agent
-    void deviceDiscovered(const QBluetoothDeviceInfo &device);
-    void scanError(QBluetoothDeviceDiscoveryAgent::Error error);
-    void scanFinished();
-    void scanStopped();
-
-    // local device
-    void pairingFinished(const QBluetoothAddress &address, QBluetoothLocalDevice::Pairing pairing);
-    void pairingDisplayPinCode(const QBluetoothAddress &address, QString pin);
-    void pairingDisplayConfirmation(const QBluetoothAddress &address, QString pin);
-    void pairingError(QBluetoothLocalDevice::Error error);
-
-signals:
-    void isScanningChanged();
 
 private:
-    explicit BluetoothManager(QObject *parent = nullptr);
-    void initConnections();
-    void prepareDevice();
-    void makeNewConnection(const QBluetoothDeviceInfo &device);
-    void scanAvailableServices();
+    BluetoothManager();
 
-    QBluetoothLocalDevice  m_localDevice;
-    QBluetoothDeviceDiscoveryAgent m_discoveryAgent;
-    QLowEnergyController *m_bleController;
+public Q_SLOTS:
 
-    bool m_isScanning;
-    bool m_connectAfterPaired;
-    std::unique_ptr<BluetoothDevicesModel> m_devicesModel;
+private Q_SLOTS:
+
+signals:
+
+private:
+    QBluetoothLocalDevice       m_localDevices;
+    QList<QBluetoothHostInfo>   m_listAdaptors;
+
+    ChatServer  *m_server;
+    QString     m_deviceName;
+
 };
 
 
