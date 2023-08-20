@@ -8,6 +8,7 @@
 #include <QBluetoothDeviceDiscoveryAgent>
 #include <QLowEnergyController>
 #include <QLowEnergyService>
+#include <QBluetoothSocket>
 #include <memory>
 #include "bluetoothdevicesmodel.h"
 
@@ -15,22 +16,18 @@ class BluetoothManager : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool isScanning READ isScanning WRITE setIsScanning NOTIFY isScanningChanged FINAL)
+
 public:
     static BluetoothManager &instance();
-
     virtual ~BluetoothManager();
-
     bool isScanning() const;
     void setIsScanning(bool newIsScanning);
-
     BluetoothDevicesModel *devicesList() const;
 
 public slots:
     void startScan();
     void stopScan();
-
     void connectToDevice(const int &deviceIndex);
-
     void clearDevicesList();
 
 private slots:
