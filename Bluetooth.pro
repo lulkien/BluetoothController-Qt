@@ -18,14 +18,18 @@ INCLUDEPATH += $$PWD/src
 
 # Input
 HEADERS += src/bluetoothdevicesmodel.h \
-           src/bluetoothmanager.h \
+           src/chatclient.h \
+           src/chatmanager.h \
            src/chatserver.h \
-           src/common.h
+           src/common.h \
+           src/messagesmodel.h
 
 SOURCES += src/bluetoothdevicesmodel.cpp \
-           src/bluetoothmanager.cpp \
+    src/chatclient.cpp \
+    src/chatmanager.cpp \
     src/chatserver.cpp \
            src/main.cpp \
+    src/messagesmodel.cpp
 
 RESOURCES += qml.qrc
 

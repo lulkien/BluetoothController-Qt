@@ -134,7 +134,16 @@ void ChatServer::stop()
 {
     LOG_DBG;
     m_serviceInfo.unregisterService();
-    qDeleteAll(m_clientSockets);
+    qDeleteAll(m_connectedSockets);
+}
+
+void ChatServer::sendMessage(const QString &message)
+{
+    // send message to every connected sockets
+    QByteArray text = message.toUtf8() + '\n';
+
+    for (QBluetoothSocket *socket : qAsConst(m_connectedSockets))
+        socket->write(text);
 }
 
 void ChatServer::clientConnected()
@@ -150,7 +159,7 @@ void ChatServer::clientConnected()
     connect(socket, &QBluetoothSocket::readyRead, this, &ChatServer::readSocket);
     connect(socket, &QBluetoothSocket::disconnected, this, &ChatServer::clientDisconnected);
 
-    m_clientSockets.append(socket);
+    m_connectedSockets.append(socket);
     emit notifyClientConnected(socket->peerName());
 }
 
@@ -167,7 +176,7 @@ void ChatServer::clientDisconnected()
 
     emit notifyClientDisconnected(socket->peerName());
 
-    m_clientSockets.removeOne(socket);
+    m_connectedSockets.removeOne(socket);
     socket->deleteLater();
 }
 

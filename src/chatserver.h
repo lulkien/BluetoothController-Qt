@@ -16,6 +16,9 @@ public:
     void stop();
 
 public slots:
+    void sendMessage(const QString &message);
+
+private slots:
     void clientConnected();
     void clientDisconnected();
     void readSocket();
@@ -28,7 +31,7 @@ signals:
 private:
     QBluetoothServer            *m_rfCommServer;
     QBluetoothServiceInfo       m_serviceInfo;
-    QList<QBluetoothSocket *>   m_clientSockets;
+    QList<QBluetoothSocket *>   m_connectedSockets;
 
 };
 

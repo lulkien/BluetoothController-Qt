@@ -11,4 +11,10 @@ Window {
     minimumWidth: width
     visible: true
     title: qsTr("Hello World")
+
+    Loader {
+        id: screen_loader
+        anchors.fill: parent
+        source: "qrc:/ui/screens/ChatScreen.qml"
+    }
 }
