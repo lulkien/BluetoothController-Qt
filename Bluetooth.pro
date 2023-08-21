@@ -8,6 +8,8 @@ TEMPLATE = app
 TARGET = Bluetooth
 
 INCLUDEPATH += $$PWD/src
+INCLUDEPATH += $$PWD/src/ChatController
+INCLUDEPATH += $$PWD/src/BluetoothController
 
 # You can make your code fail to compile if you use deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -17,19 +19,21 @@ INCLUDEPATH += $$PWD/src
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # Input
-HEADERS += src/bluetoothdevicesmodel.h \
-           src/chatclient.h \
-           src/chatmanager.h \
-           src/chatserver.h \
+HEADERS += src/BluetoothController/bluetoothdevicesmodel.h \
+           src/BluetoothController/bluetoothservicescanner.h \
+           src/ChatController/chatclient.h \
+           src/ChatController/chatmanager.h \
+           src/ChatController/chatserver.h \
            src/common.h \
-           src/messagesmodel.h
+           src/ChatController/messagesmodel.h
 
-SOURCES += src/bluetoothdevicesmodel.cpp \
-    src/chatclient.cpp \
-    src/chatmanager.cpp \
-    src/chatserver.cpp \
+SOURCES += src/BluetoothController/bluetoothdevicesmodel.cpp \
+           src/BluetoothController/bluetoothservicescanner.cpp \
+           src/ChatController/chatclient.cpp \
+           src/ChatController/chatmanager.cpp \
+           src/ChatController/chatserver.cpp \
            src/main.cpp \
-    src/messagesmodel.cpp
+           src/ChatController/messagesmodel.cpp
 
 RESOURCES += qml.qrc
 
