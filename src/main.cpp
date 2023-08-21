@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "chatmanager.h"
+#include "bluetoothmanager.h"
 
 int main(int argc, char *argv[])
 {
@@ -10,8 +11,11 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    engine.rootContext()->setContextProperty("ChatManager", &ChatManager::instance());
-    engine.rootContext()->setContextProperty("Conversation", ChatManager::instance().getConversation());
+    engine.rootContext()->setContextProperty("ChatManager",     &ChatManager::instance());
+    engine.rootContext()->setContextProperty("Conversation",    ChatManager::instance().getConversation());
+
+    engine.rootContext()->setContextProperty("BluetoothM",      &BluetoothManager::instance());
+    engine.rootContext()->setContextProperty("ServiceModel",    BluetoothManager::instance().getServiceModel());
 
 
     // load main module

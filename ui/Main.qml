@@ -15,6 +15,6 @@ Window {
     Loader {
         id: screen_loader
         anchors.fill: parent
-        source: "qrc:/ui/screens/ChatScreen.qml"
+        source: "qrc:/ui/screens/ConnectScreen.qml"
     }
 }

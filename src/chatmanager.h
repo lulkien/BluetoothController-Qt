@@ -9,7 +9,9 @@
 #include <QBluetoothHostInfo>
 #include <QBluetoothLocalDevice>
 #include "chatserver.h"
+#include "chatclient.h"
 #include "messagesmodel.h"
+#include "bluetoothservicescanner.h"
 
 class ChatManager : public QObject
 {
@@ -46,6 +48,7 @@ private:
     QList<QBluetoothHostInfo>   m_listAdaptors;
 
     ChatServer                  *m_server;
+    QList<ChatClient *>         m_clients;
     QString                     m_deviceName;
 
     MessagesModel               *m_conversationModel;

@@ -33,6 +33,8 @@ ChatManager::ChatManager()
         QGuiApplication::quit();
     }
 
+    // init bt scanner
+
     // init chat server and connect signals/slots
     m_server = new ChatServer(this);
     // server to controller

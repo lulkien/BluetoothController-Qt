@@ -2,8 +2,6 @@
 #include "common.h"
 #include "qbluetoothaddress.h"
 
-static const QLatin1String serviceUuid("00001101-0000-1000-8000-00805F9B34FB");
-
 ChatServer::ChatServer(QObject *parent)
     : QObject { parent }
     , m_rfCommServer { nullptr }
@@ -49,7 +47,7 @@ void ChatServer::start(const QBluetoothAddress &localAddress)
                                profileSequence);
 
     classId.clear();
-    classId << QVariant::fromValue(QBluetoothUuid(serviceUuid));
+    classId << QVariant::fromValue(SERVICE_UUID);
     classId << QVariant::fromValue(QBluetoothUuid(QBluetoothUuid::SerialPort));
 
     m_serviceInfo.setAttribute(QBluetoothServiceInfo::ServiceClassIds, classId);
@@ -62,7 +60,7 @@ void ChatServer::start(const QBluetoothAddress &localAddress)
     //! [Service name, description and provider]
 
     //! [Service UUID set]
-    m_serviceInfo.setServiceUuid(QBluetoothUuid(serviceUuid));
+    m_serviceInfo.setServiceUuid(SERVICE_UUID);
     //! [Service UUID set]
 
     //! [Service Discoverability]

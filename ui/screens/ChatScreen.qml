@@ -10,6 +10,20 @@ Item {
         anchors.fill: parent
         anchors.margins: 10
         spacing: root.globalSpacing
+
+        Rectangle {
+            id: disconnect_btn
+            width: parent.width
+            height: parent.height * 0.05
+            color: "gray"
+            border.color: "black"
+            Text {
+                anchors.centerIn: parent
+                color: "white"
+                text: "DISCONNECT"
+            }
+        }
+
         Rectangle {
             id: list_msg_area
             width: col_layout.width
@@ -44,7 +58,7 @@ Item {
 
         Row {
             width: parent.width
-            height: parent.height - list_msg_area.height - parent.spacing
+            height: parent.height - list_msg_area.height - disconnect_btn.height - 2 * parent.spacing
             spacing: root.globalSpacing
             Rectangle {
                 id: text_box_area

@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>ui/Main.qml</file>
         <file>ui/screens/ChatScreen.qml</file>
+        <file>ui/screens/ConnectScreen.qml</file>
+        <file>ui/components/Button.qml</file>
     </qresource>
 </RCC>

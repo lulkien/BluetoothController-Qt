@@ -19,21 +19,25 @@ INCLUDEPATH += $$PWD/src/BluetoothController
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 # Input
-HEADERS += src/BluetoothController/bluetoothdevicesmodel.h \
+HEADERS += \
            src/BluetoothController/bluetoothservicescanner.h \
+           src/BluetoothController/listservicesmodel.h \
            src/ChatController/chatclient.h \
-           src/ChatController/chatmanager.h \
            src/ChatController/chatserver.h \
-           src/common.h \
-           src/ChatController/messagesmodel.h
+           src/ChatController/messagesmodel.h \
+           src/bluetoothmanager.h \
+           src/chatmanager.h \
+           src/common.h
 
-SOURCES += src/BluetoothController/bluetoothdevicesmodel.cpp \
+SOURCES += \
            src/BluetoothController/bluetoothservicescanner.cpp \
+           src/BluetoothController/listservicesmodel.cpp \
            src/ChatController/chatclient.cpp \
-           src/ChatController/chatmanager.cpp \
            src/ChatController/chatserver.cpp \
-           src/main.cpp \
-           src/ChatController/messagesmodel.cpp
+           src/ChatController/messagesmodel.cpp \
+           src/bluetoothmanager.cpp \
+           src/chatmanager.cpp \
+           src/main.cpp
 
 RESOURCES += qml.qrc
 
